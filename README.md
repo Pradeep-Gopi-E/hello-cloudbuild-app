@@ -32,3 +32,8 @@ This setup uses two Git repositories:
 ## Conclusion
 
 With this setup, I’ve streamlined my deployment process, automating the flow from code commit to deployment. Everything is version-controlled in Git, providing clear visibility and easy rollback in case of any issues.
+
+## References
+
+- [Google Kubernetes Engine Pipeline using Cloud Build](https://www.cloudskillsboost.google/focuses/52829?parent=catalog)
+
