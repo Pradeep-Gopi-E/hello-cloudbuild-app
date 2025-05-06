@@ -61,7 +61,7 @@ steps:
   args:
   - clone
   - --recurse-submodules
-  - git@github.com:$Pradeep-Gopi-E/hello-cloudbuild-env.git
+  - git@github.com:$_USERNAME/hello-cloudbuild-env.git
   volumes:
   - name: ssh
     path: /root/.ssh
@@ -119,3 +119,6 @@ availableSecrets:
 # [END cloudbuild-trigger-cd]
 options:
   logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _USERNAME: Pradeep-Gopi-E
