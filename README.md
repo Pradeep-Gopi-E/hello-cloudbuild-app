@@ -1,39 +1,38 @@
-# GitOps-style Continuous Delivery with Cloud Build
+## GitOps-Based CI/CD Pipeline with Cloud Build and Google Kubernetes Engine (GKE)
 
-This repository contains the setup and code I used for implementing a **GitOps-style Continuous Delivery pipeline** with **Cloud Build** and **Google Kubernetes Engine (GKE)**. GitOps is a powerful and popular approach to Continuous Delivery that uses Git as a source of truth for deployments, making the process more reliable and auditable.
+This repository contains the setup and code for implementing a **GitOps-based Continuous Delivery pipeline** with **Cloud Build** and **Google Kubernetes Engine (GKE)**. GitOps is a modern, reliable approach to Continuous Delivery that uses Git as the single source of truth for deployments, providing traceability, automation, and simplicity in the deployment lifecycle.
 
 ## Overview
 
-In this setup, I created a CI/CD pipeline that automatically builds container images from committed code, stores those images in **Google Artifact Registry**, and updates the Kubernetes deployment manifests stored in a Git repository. Once updated, the pipeline triggers a deployment to **Google Kubernetes Engine (GKE)**.
+In this configuration, I’ve designed a CI/CD pipeline that automatically builds container images from committed code, stores them in **Google Artifact Registry**, and updates Kubernetes deployment manifests stored in a Git repository. Once updated, the pipeline triggers an automatic deployment to **Google Kubernetes Engine (GKE)**.
 
-This setup uses two Git repositories:
+The system uses two Git repositories:
 1. **_app_ repository** – Stores the application code.
 2. **_env_ repository** – Stores Kubernetes deployment manifests.
 
-### How it Works
+### How It Works
 
-1. **Code Change**: When I push a change to the _app_ repository, a Cloud Build pipeline is triggered. It runs tests, builds a container image, and stores it in Artifact Registry.
+1. **Code Change**: A push to the _app_ repository triggers a Cloud Build pipeline. It builds a new container image, runs tests, and stores the image in Artifact Registry.
    
-2. **Update Deployment Manifests**: After pushing the new image, Cloud Build updates the Kubernetes manifest in the _env_ repository to use the latest image version. The updated manifests are committed to the _candidate_ branch of the _env_ repository.
+2. **Update Deployment Manifests**: After building the container image, Cloud Build updates the Kubernetes deployment manifests stored in the _env_ repository to reference the latest image version. The updated manifests are committed to the **candidate** branch of the _env_ repository.
 
-3. **Deployment to Kubernetes**: A deployment to **GKE** is triggered as part of the pipeline process. After the deployment succeeds, the updated manifests are copied to the **_production_ branch** of the _env_ repository, indicating that the deployment was successful.
+3. **Deployment to Kubernetes**: Cloud Build triggers a deployment to **GKE** as part of the pipeline process. Once the deployment is successful, the updated manifests are moved to the **_production_ branch** of the _env_ repository, confirming the success of the deployment.
 
-### Benefits of This Approach
+### Key Benefits of This GitOps Approach
 
-- **Candidate Branch**: Tracks all deployment attempts, including failed ones, providing a complete history of deployments.
-- **Production Branch**: Reflects only the successful deployments, making it the source of truth for production-ready configurations.
-- **Rollback**: Any deployment can be rolled back by re-executing the corresponding Cloud Build job, which will update the _production_ branch to reflect the rollback, ensuring the correct deployment history.
+- **Candidate Branch**: Provides a record of all deployments, including unsuccessful ones, for auditing and troubleshooting purposes.
+- **Production Branch**: Reflects only successful deployments, serving as the definitive source of truth for production-ready configurations.
+- **Rollback Capability**: If needed, any deployment can be rolled back by triggering a corresponding Cloud Build job, automatically updating the _production_ branch with the correct configuration.
 
-### Cloud Build & Deployment Visibility
+### Monitoring and Rollback with Cloud Build
 
-- I have visibility into all deployments within **Cloud Build**, where I can track the status of each build, including whether it succeeded or failed.
-- If needed, I can easily roll back to any previous deployment by triggering the respective build job in Cloud Build, ensuring that my environment is always in a known, reliable state.
+- **Cloud Build Visibility**: All builds are visible within **Cloud Build**, where I can track their status, whether they succeed or fail.
+- **Rollback Process**: Should a deployment encounter issues, I can quickly roll back by triggering the previous successful deployment from Cloud Build, ensuring that the environment is always in a known, reliable state.
 
 ## Conclusion
 
-With this setup, I’ve streamlined my deployment process, automating the flow from code commit to deployment. Everything is version-controlled in Git, providing clear visibility and easy rollback in case of any issues.
+This setup has streamlined the entire deployment pipeline, automating the process from code commit to deployment. By version-controlling every step in Git, I can easily manage deployments, track changes, and ensure that the application runs in a stable and predictable manner in GKE.
 
 ## References
 
 - [Google Kubernetes Engine Pipeline using Cloud Build](https://www.cloudskillsboost.google/focuses/52829?parent=catalog)
-
