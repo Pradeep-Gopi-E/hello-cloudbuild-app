@@ -104,10 +104,11 @@ steps:
     set -x && \
     cd hello-cloudbuild-env && \
     git add kubernetes.yaml && \
+    git diff --cached --exit-code && echo "No changes to commit" && exit 0 || true
     git commit -m "Deploying image europe-west4-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild:${SHORT_SHA}
     Built from commit ${COMMIT_SHA} of repository hello-cloudbuild-app
     Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
-    git push origin candidate
+    git push origin candidate || echo "Nothing to push"
   volumes:
   - name: ssh
     path: /root/.ssh
